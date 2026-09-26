@@ -29,7 +29,7 @@ dialog{width:min(480px,92%);background:#17131d;color:#eee;border:1px solid #6043
 <div class="top"><div class="title">⚗️ 桑多涅的炼金工坊 <small>8.0</small></div><div class="sub">紫晶塔的秘密 · 8.0 完整工坊版</div>
 <div class="stats"><span class="pill">💰 <b id="gold"></b></span><span class="pill">💎 <b id="gem"></b></span><span class="pill">⚡ <b id="sta"></b>/12</span><span class="pill">❤️ <b id="aff"></b></span><span class="pill">📅 第<b id="day"></b>天</span><span class="pill">Lv.<b id="lv"></b></span></div></div>
 <main>
-<section id="home" class="screen active"><div class="hero"><div class="face">🎀</div><h1>欢迎回来，汪。</h1><p>紫晶塔的封印正在崩解。8.0 的工坊循环已经启动。夜铃已经先一步进入塔内，而桑多涅正在工坊等待最后一份材料。</p><button onclick="go('story')">▶ 继续主线</button></div>
+<section id="home" class="screen active"><div class="hero"><div class="face">🎀</div><h1>欢迎回来，汪。</h1><p>紫晶塔的封印正在崩解。8.0 的工坊循环已经启动。夜铃已经先一步进入塔内，而桑多涅正在工坊等待最后一份材料。</p><button onclick="openStory()">▶ 继续主线</button></div>
 <div class="panel"><div class="row"><b>今日行动</b><span class="muted" id="progress"></span></div><div class="bar"><i id="pbar"></i></div><div class="grid3" style="margin-top:10px"><div class="skill">⚗️<br><small>炼金</small></div><div class="skill">⚔️<br><small>讨伐</small></div><div class="skill">❤️<br><small>羁绊</small></div></div></div>
 
 <div class="panel">
@@ -80,7 +80,8 @@ let ehp=240,energy=3;
 function save(){localStorage.setItem(K,JSON.stringify(s));toast('8.0 存档已保存 💾')}
 function saveSilent(){localStorage.setItem(K,JSON.stringify(s))}
 function toast(x){let e=document.getElementById('toast');e.textContent=x;e.style.display='block';setTimeout(()=>e.style.display='none',1500)}
-function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');let ids=['home','alchemy','map','dolls','gear','bag'];document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));let i=ids.indexOf(id);if(i>=0)document.querySelectorAll('.nav button')[i].classList.add('on');render()}
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));const target=document.getElementById(id);if(!target)return;target.classList.add('active');let ids=['home','alchemy','map','dolls','gear','bag'];document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));let i=ids.indexOf(id);if(i>=0)document.querySelectorAll('.nav button')[i].classList.add('on');try{render()}catch(e){console.error(e)}}
+function openStory(){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));const target=document.getElementById('story');if(target){target.classList.add('active');window.scrollTo(0,0)}try{render()}catch(e){console.error(e)}}
 function render(){
 ['gold','gem','sta','aff','lv','leaf','flower','mush','crystal','honey','dust','day'].forEach(k=>{let e=document.getElementById(k);if(e)e.textContent=s[k]});
 let n=(s.alchemy>=3?1:0)+(s.battles>=1?1:0)+(s.aff>=40?1:0);progress.textContent=n+'/3';pbar.style.width=n/3*100+'%';pity.textContent=s.pity;pitybar.style.width=s.pity*10+'%';
