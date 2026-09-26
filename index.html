@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-CN"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>桑多涅的炼金工坊 7.0</title>
+<title>桑多涅的炼金工坊 8.0</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#07070d;color:#f4eff9;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
 #app{max-width:520px;margin:auto;min-height:100vh;background:linear-gradient(#171221,#0a0910);padding-bottom:88px}
@@ -26,10 +26,10 @@ dialog{width:min(480px,92%);background:#17131d;color:#eee;border:1px solid #6043
 .badge7{display:inline-block;padding:3px 7px;border-radius:99px;background:#4b2d5b;color:#f0d6ff;font-size:10px;margin-left:5px}
 </style>
 </head><body><div id="app">
-<div class="top"><div class="title">⚗️ 桑多涅的炼金工坊 <small>7.0</small></div><div class="sub">紫晶塔的秘密 · 手游化重制版 · 7.0</div>
-<div class="stats"><span class="pill">💰 <b id="gold"></b></span><span class="pill">💎 <b id="gem"></b></span><span class="pill">⚡ <b id="sta"></b>/12</span><span class="pill">❤️ <b id="aff"></b></span><span class="pill">Lv.<b id="lv"></b></span></div></div>
+<div class="top"><div class="title">⚗️ 桑多涅的炼金工坊 <small>8.0</small></div><div class="sub">紫晶塔的秘密 · 8.0 完整工坊版</div>
+<div class="stats"><span class="pill">💰 <b id="gold"></b></span><span class="pill">💎 <b id="gem"></b></span><span class="pill">⚡ <b id="sta"></b>/12</span><span class="pill">❤️ <b id="aff"></b></span><span class="pill">📅 第<b id="day"></b>天</span><span class="pill">Lv.<b id="lv"></b></span></div></div>
 <main>
-<section id="home" class="screen active"><div class="hero"><div class="face">🎀</div><h1>欢迎回来，汪。</h1><p>紫晶塔的封印正在崩解。7.0 的新委托系统已经启动。夜铃已经先一步进入塔内，而桑多涅正在工坊等待最后一份材料。</p><button onclick="go('story')">▶ 继续主线</button></div>
+<section id="home" class="screen active"><div class="hero"><div class="face">🎀</div><h1>欢迎回来，汪。</h1><p>紫晶塔的封印正在崩解。8.0 的工坊循环已经启动。夜铃已经先一步进入塔内，而桑多涅正在工坊等待最后一份材料。</p><button onclick="go('story')">▶ 继续主线</button></div>
 <div class="panel"><div class="row"><b>今日行动</b><span class="muted" id="progress"></span></div><div class="bar"><i id="pbar"></i></div><div class="grid3" style="margin-top:10px"><div class="skill">⚗️<br><small>炼金</small></div><div class="skill">⚔️<br><small>讨伐</small></div><div class="skill">❤️<br><small>羁绊</small></div></div></div>
 
 <div class="panel">
@@ -39,7 +39,7 @@ dialog{width:min(480px,92%);background:#17131d;color:#eee;border:1px solid #6043
     <div class="v7card"><b>⚙️ 工坊升级</b><small>炼金次数越多，工坊等级越高。</small><button onclick="upgradeWorkshop()">查看等级</button></div>
   </div>
 </div>
-<div class="grid"><button onclick="go('alchemy')">⚗️ 炼金工坊</button><button onclick="go('map')">🗺️ 章节地图</button><button onclick="go('battle')">⚔️ 紫晶塔</button><button onclick="go('gacha')">✨ 召唤人偶</button></div></section>
+<div class="grid"><button onclick="go('alchemy')">⚗️ 炼金工坊</button><button onclick="go('map')">🗺️ 章节地图</button><button onclick="go('battle')">⚔️ 紫晶塔</button><button onclick="go('gacha')">✨ 召唤人偶</button><button onclick="go('shop')">🛒 工坊商店</button><button onclick="go('quests')">📜 任务板</button><button onclick="go('gear')">⚔️ 装备技能</button></div></section>
 
 <section id="alchemy" class="screen"><div class="panel"><h2>⚗️ 炼金工坊</h2><div class="muted">配方会随着探索与剧情逐步解锁。高稀有度配方有额外宝石奖励。</div><div id="recipes"></div></div><div class="panel"><b>炼金日志</b><div class="log" id="alog"></div></div></section>
 
@@ -57,33 +57,56 @@ dialog{width:min(480px,92%);background:#17131d;color:#eee;border:1px solid #6043
 
 <section id="gacha" class="screen"><div class="panel"><h2>✨ 人偶召唤</h2><p class="muted">本 Demo 使用虚拟宝石，不涉及真实付款。</p><div class="hero" style="min-height:160px"><h2>「夜铃 · 月下契约」</h2><p>★★★★ 概率提升 · 重复获得转化为碎片</p></div><div class="grid"><button onclick="pull(1)">单抽 · 10💎</button><button onclick="pull(10)">十连 · 100💎</button></div><p>保底计数：<b id="pity">0</b> / 10</p><div class="bar"><i id="pitybar"></i></div></div><div class="panel"><b>召唤记录</b><div class="log" id="glog"></div></div></section>
 
-<section id="story" class="screen"><div class="panel"><span class="tag">第三章 · 塔影之下</span><h2 id="stitle">被封存的心脏</h2><p id="stext">塔心传来心跳般的震动。夜铃站在门前，第一次露出了犹豫的神情。</p><button onclick="choice(1)">相信夜铃，打开封印</button><button class="secondary" onclick="choice(2)">先解析炼金符文</button></div>
-<div class="panel"><b>章节进度</b><div class="bar"><i style="width:68%"></i></div><p class="muted">3 / 5 · 第四章将在调查完成后开放</p></div></section>
+<section id="shop" class="screen"><div class="panel"><h2>🛒 工坊商店</h2><p class="muted">用金币补充常用材料；每日库存会轮换。</p><div id="shopItems"></div></div></section>
+<section id="quests" class="screen"><div class="panel"><h2>📜 任务板</h2><div id="questList"></div></div><div class="panel"><b>连续完成</b><p class="muted">连续完成每日委托可获得额外宝石。当前连续：<b id="streakTxt">0</b> 天</p></div></section>
+<section id="gear" class="screen"><div class="panel"><h2>⚔️ 装备与技能</h2><p class="muted">装备会改变战斗数值；技能需要在战斗中消耗能量。</p><div class="item"><div class="row"><b>主手 · 紫晶炼金杖</b><span class="tag">Lv.2</span></div><p class="muted">攻击 +12 · 爆裂炼成伤害 +10%</p><button onclick="upgradeGear('staff')">强化 · 180G</button></div><div class="item"><div class="row"><b>饰品 · 夜铃契约石</b><span class="tag">Lv.${'2'}</span></div><p class="muted">好感越高，协战伤害越高。</p><button onclick="upgradeGear('ring')">强化 · 240G</button></div></div><div class="panel"><h3>✨ 主动技能</h3><div class="grid"><button onclick="skill('meteor')">☄️ 星陨炼成<br><small>3能量 · 75伤害</small></button><button onclick="skill('barrier')">🛡️ 紫晶屏障<br><small>1能量 · 减伤</small></button></div></div></section>
+
+<section id="story" class="screen"><div class="panel"><span class="tag">第三章 · 塔影之下 <span class="badge7">8.0</span></span><h2 id="stitle">被封存的心脏</h2><p id="stext">塔心传来心跳般的震动。夜铃站在门前，第一次露出了犹豫的神情。</p><button onclick="choice(1)">相信夜铃，打开封印</button><button class="secondary" onclick="choice(2)">先解析炼金符文</button></div>
+<div class="panel"><b>章节进度</b><div class="bar"><i style="width:68%"></i></div><p class="muted">4 / 5 · 第四章「塔心回响」已开放</p><button onclick="chapter4()">▶ 进入第四章</button></div></section>
 
 <section id="bag" class="screen"><div class="panel"><h2>🎒 背包</h2><div class="grid3"><div class="pill">🌿 叶片<br><b id="leaf"></b></div><div class="pill">🌸 花瓣<br><b id="flower"></b></div><div class="pill">🍄 蘑菇<br><b id="mush"></b></div><div class="pill">💎 晶矿<br><b id="crystal"></b></div><div class="pill">🍯 蜂蜜<br><b id="honey"></b></div><div class="pill">✨ 星尘<br><b id="dust"></b></div></div></div>
-<div class="panel"><h3>🏆 成就</h3><div id="ach"></div></div><div class="panel"><h3>⚙️ 设置</h3><div class="muted">桑多涅的炼金工坊 7.0 · 单文件网页版</div><button onclick="save()">💾 保存</button><button class="secondary" onclick="exportSave()">📋 导出存档</button><button class="red" onclick="resetSave()">重置存档</button></div></section>
+<div class="panel"><h3>🏆 成就</h3><div id="ach"></div></div><div class="panel"><h3>⚙️ 设置</h3><div class="muted">桑多涅的炼金工坊 8.0 · 单文件网页版</div><button onclick="save()">💾 保存</button><button class="secondary" onclick="exportSave()">📋 导出存档</button><button class="red" onclick="resetSave()">重置存档</button></div></section>
 </main>
-<nav class="nav"><button class="on" onclick="go('home')">🏠<br>首页</button><button onclick="go('alchemy')">⚗️<br>炼金</button><button onclick="go('map')">🗺️<br>地图</button><button onclick="go('dolls')">🎭<br>人偶</button><button onclick="go('bag')">🎒<br>背包</button></nav><div id="toast" class="toast"></div></div>
+<nav class="nav"><button class="on" onclick="go('home')">🏠<br>首页</button><button onclick="go('alchemy')">⚗️<br>炼金</button><button onclick="go('map')">🗺️<br>地图</button><button onclick="go('dolls')">🎭<br>人偶</button><button onclick="go('gear')">⚔️<br>装备</button><button onclick="go('bag')">🎒<br>背包</button></nav><div id="toast" class="toast"></div></div>
 <script>
-const K='sandone7';let s=JSON.parse(localStorage.getItem(K)||'null')||{gold:3200,gem:260,sta:12,aff:32,lv:5,leaf:22,flower:18,mush:15,crystal:14,honey:12,dust:5,alchemy:0,battles:0,pity:0,story:3,workshop:1,workshopXp:0,daily:0,dailyDay:'',streak:0};
-s.workshop=s.workshop||1;s.workshopXp=s.workshopXp||0;s.daily=s.daily||0;s.dailyDay=s.dailyDay||'';s.streak=s.streak||0;
+const K='sandone8';const OLD='sandone7';function today(){return new Date().toISOString().slice(0,10)}
+let s=JSON.parse(localStorage.getItem(K)||'null');
+if(!s){const old=JSON.parse(localStorage.getItem(OLD)||'null');s=old||{gold:3200,gem:260,sta:12,aff:32,lv:5,leaf:22,flower:18,mush:15,crystal:14,honey:12,dust:5,alchemy:0,battles:0,pity:0,story:3,workshop:1,workshopXp:0,daily:0,dailyDay:'',streak:0};}
+s.workshop=s.workshop||1;s.workshopXp=s.workshopXp||0;s.daily=s.daily||0;s.dailyDay=s.dailyDay||'';s.streak=s.streak||0;s.day=s.day||1;s.quests=s.quests||{brew:0,explore:0,battle:0};s.inventory=s.inventory||{};s.shopDay=s.shopDay||'';s.shopBought=s.shopBought||{};s.lastDate=s.lastDate||today();s.gear=s.gear||{staff:1,ring:1};s.chapter=s.chapter||3;s.skillCooldown=s.skillCooldown||0;
+function newDay(){let d=today();if(s.lastDate!==d){s.daily=0;s.quests={brew:0,explore:0,battle:0};s.sta=12;s.day++;s.shopDay=d;s.shopBought={};s.lastDate=d;saveSilent();}}
+newDay();
 const R={heal:['治愈药剂','🌿2 🌸1',120,'普通'],mana:['星蓝药剂','🌸2 ✨1',160,'普通'],stam:['活力药剂','🍄2 🍯1',150,'普通'],moon:['月辉药剂','🌸2 💎2',420,'稀有'],star:['星尘圣水','✨2 🍯1',600,'史诗'],ember:['赤焰精华','🌿2 💎2',500,'稀有'],frost:['霜晶药剂','🍄2 💎1',380,'稀有'],dream:['梦境露珠','🌸3 ✨2',800,'史诗'],void:['虚空溶剂','💎4 ✨2',1200,'传说'],life:['生命原液','🌿4 🍯2',1000,'传说']};
 let ehp=240,energy=3;
-function save(){localStorage.setItem(K,JSON.stringify(s));toast('存档已保存 💾')}
+function save(){localStorage.setItem(K,JSON.stringify(s));toast('8.0 存档已保存 💾')}
+function saveSilent(){localStorage.setItem(K,JSON.stringify(s))}
 function toast(x){let e=document.getElementById('toast');e.textContent=x;e.style.display='block';setTimeout(()=>e.style.display='none',1500)}
-function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');let ids=['home','alchemy','map','dolls','bag'];document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));let i=ids.indexOf(id);if(i>=0)document.querySelectorAll('.nav button')[i].classList.add('on');render()}
-function render(){['gold','gem','sta','aff','lv','leaf','flower','mush','crystal','honey','dust'].forEach(k=>{let e=document.getElementById(k);if(e)e.textContent=s[k]});let n=(s.alchemy>=3?1:0)+(s.battles>=1?1:0)+(s.aff>=40?1:0);progress.textContent=n+'/3';pbar.style.width=n/3*100+'%';pity.textContent=s.pity;pitybar.style.width=s.pity*10+'%';recipes.innerHTML=Object.entries(R).map(([k,r])=>`<div class="item"><div class="row"><b>${r[0]}</b><span class="tag">${r[3]}</span></div><span class="muted">${r[1]} · 售价 ${r[2]}G</span><button onclick="brew('${k}')">炼制</button></div>`).join('');ach.innerHTML=`<div class="item">⚗️ 炼金学徒 ${s.alchemy}/3 ${s.alchemy>=3?'✅':''}</div><div class="item">⚔️ 塔门挑战者 ${s.battles}/1 ${s.battles>=1?'✅':''}</div><div class="item">❤️ 夜铃契约 ${s.aff}/40 ${s.aff>=40?'✅':''}</div>`}
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');let ids=['home','alchemy','map','dolls','gear','bag'];document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));let i=ids.indexOf(id);if(i>=0)document.querySelectorAll('.nav button')[i].classList.add('on');render()}
+function render(){
+['gold','gem','sta','aff','lv','leaf','flower','mush','crystal','honey','dust','day'].forEach(k=>{let e=document.getElementById(k);if(e)e.textContent=s[k]});
+let n=(s.alchemy>=3?1:0)+(s.battles>=1?1:0)+(s.aff>=40?1:0);progress.textContent=n+'/3';pbar.style.width=n/3*100+'%';pity.textContent=s.pity;pitybar.style.width=s.pity*10+'%';
+recipes.innerHTML=Object.entries(R).map(([k,r])=>`<div class="item"><div class="row"><b>${r[0]}</b><span class="tag">${r[3]}</span></div><span class="muted">${r[1]} · 售价 ${r[2]}G</span><button onclick="brew('${k}')">炼制</button></div>`).join('');
+ach.innerHTML=`<div class="item">⚗️ 炼金学徒 ${s.alchemy}/3 ${s.alchemy>=3?'✅':''}</div><div class="item">⚔️ 塔门挑战者 ${s.battles}/1 ${s.battles>=1?'✅':''}</div><div class="item">❤️ 夜铃契约 ${s.aff}/40 ${s.aff>=40?'✅':''}</div><div class="item">📅 连续委托 ${s.streak} 天</div>`;
+if(document.getElementById('streakTxt'))streakTxt.textContent=s.streak;
+if(document.getElementById('shopItems'))renderShop();if(document.getElementById('questList'))renderQuests();
+}
+function renderShop(){const items=[['leaf','🌿 叶片',25],['flower','🌸 花瓣',30],['mush','🍄 蘑菇',28],['crystal','💎 晶矿',55],['honey','🍯 蜂蜜',45],['dust','✨ 星尘',70]];shopItems.innerHTML=items.map(([k,n,c])=>{let b=s.shopBought[k]||0;return `<div class="item"><div class="row"><b>${n}</b><span>${c}G</span></div><span class="muted">今日已购买 ${b}/5</span><button onclick="buy('${k}',${c})" ${b>=5?'disabled':''}>购买 ×1</button></div>`}).join('')}
+function renderQuests(){const q=[['brew','⚗️ 完成炼金','炼制 3 次','3',120],['explore','🗺️ 探索采集','完成 2 次探索','2',150],['battle','⚔️ 挑战紫晶塔','完成 1 次 Boss 战','1',220]];questList.innerHTML=q.map(x=>{const v=s.quests[x[0]];const done=v>=+x[3];const claimed=v===-99;return `<div class="item"><div class="row"><b>${x[1]}</b><span>${claimed?'已领取':v+'/'+x[3]}</span></div><span class="muted">${x[2]} · 奖励 ${x[4]}G</span>${done&&!claimed?`<button onclick="claimQuest('${x[0]}',${x[4]})">领取奖励</button>`:`<div class="bar"><i style="width:${claimed?100:Math.min(100,v/+x[3]*100)}%"></i></div>`}</div>`}).join('')}
 function costMap(c){return [...c.matchAll(/([🌿🌸🍄🍯💎✨])(\d+)/g)].map(x=>[{'🌿':'leaf','🌸':'flower','🍄':'mush','🍯':'honey','💎':'crystal','✨':'dust'}[x[1]],+x[2]])}
-function workshopXpAdd(n){s.workshopXp+=n;let need=s.workshop*3;if(s.workshopXp>=need){s.workshop++;s.workshopXp-=need;s.gem+=8;toast('工坊升级！ Lv.'+s.workshop+' ✨')} }
-function dailyQuest(){let d=new Date().toISOString().slice(0,10);if(s.daily===1&&s.dailyDay===d)return toast('今日委托已经完成啦。');s.daily=1;s.dailyDay=d;s.gold+=220;s.gem+=5;s.streak++;toast('委托完成！ +220G +5💎');save();render()}
+function workshopXpAdd(n){s.workshopXp+=n;let leveled=false;while(s.workshopXp>=s.workshop*3){s.workshopXp-=s.workshop*3;s.workshop++;s.gem+=8;leveled=true}if(leveled)toast('工坊升级！ Lv.'+s.workshop+' ✨')}
+function dailyQuest(){newDay();if(s.daily===1)return toast('今日委托已经完成啦。');s.daily=1;s.gold+=220;s.gem+=5;s.streak++;if(s.streak%3===0)s.gem+=10;toast(`委托完成！ +220G +5💎${s.streak%3===0?' · 连续奖励 +10💎':''}`);save();render()}
+function claimQuest(k,reward){if(s.quests[k]<(k==='brew'?3:k==='explore'?2:1))return toast('任务尚未完成');s.quests[k]=-99;s.gold+=reward;toast(`任务奖励 +${reward}G`);save();render()}
+function buy(k,c){newDay();let n=s.shopBought[k]||0;if(n>=5)return toast('今日库存已售罄');if(s.gold<c)return toast('金币不足');s.gold-=c;s[k]++;s.shopBought[k]=n+1;toast('购买成功 🛒');save();render()}
 function upgradeWorkshop(){toast('工坊 Lv.'+s.workshop+' · 经验 '+s.workshopXp+'/'+(s.workshop*3))}
-function brew(k){let r=R[k],cs=costMap(r[1]);if(!cs.every(x=>s[x[0]]>=x[1]))return toast('材料不足。去地图探索吧。');cs.forEach(x=>s[x[0]]-=x[1]);s.gold+=r[2];s.alchemy++;workshopXpAdd(r[3]=='传说'?2:1);if(r[3]=='传说')s.gem+=10;alog.innerHTML=`✨ ${r[0]} 完成，+${r[2]}G<br>`+alog.innerHTML;save();render()}
-function explore(z){let c=z==1?1:2;if(s.sta<c)return toast('体力不足 ⚡');s.sta-=c;let arr=z==1?['leaf','flower','mush']:z==2?['crystal','dust']:['flower','honey','crystal'];let k=arr[Math.floor(Math.random()*arr.length)],q=2+Math.floor(Math.random()*4);s[k]+=q;if(Math.random()<.25)s.gem+=3;toast(`探索完成：${k} ×${q} ✨`);save();render()}
-function attack(t){if(ehp<=0){ehp=240;energy=3;return toast('Boss 已重置')};let d=t==='normal'?22:t==='burst'?48:t==='doll'?34:8;if(t==='burst'){if(energy<2)return toast('能量不足');energy-=2}else if(t==='guard'){energy=Math.min(3,energy+1)}else energy=Math.min(3,energy+0.5);ehp=Math.max(0,ehp-d);let ph=ehp<=80?'狂暴晶核':ehp<=160?'紫晶共鸣':'晶化鳞甲';phase.textContent=ph;if(ehp===0){s.battles++;s.gold+=650;s.gem+=20;s.crystal+=8;blog.innerHTML='🏆 紫晶幼龙讨伐成功！ +650G +20💎<br>'+blog.innerHTML;toast('Boss 讨伐成功！ 🐉')}else{let hit=t==='guard'?3:10+(ehp<=80?8:ehp<=160?4:0);blog.innerHTML=`你造成 ${d} 伤害，Boss 反击 ${hit}。<br>`+blog.innerHTML}ehpTxt.textContent=ehp+' / 240';let ehpEl=document.getElementById('ehp');ehpEl.style.width=ehp/240*100+'%';enTxt.textContent=Math.floor(energy)+' / 3';en.style.width=energy/3*100+'%';save();render()}
+function brew(k){let r=R[k],cs=costMap(r[1]);if(!cs.every(x=>s[x[0]]>=x[1]))return toast('材料不足。去地图探索吧。');cs.forEach(x=>s[x[0]]-=x[1]);s.gold+=r[2];s.inventory[k]=(s.inventory[k]||0)+1;s.alchemy++;s.quests.brew=Math.min(3,s.quests.brew+1);workshopXpAdd(r[3]=='传说'?2:1);if(r[3]=='传说')s.gem+=10;alog.innerHTML=`✨ ${r[0]} 完成，+${r[2]}G<br>`+alog.innerHTML;save();render()}
+function explore(z){let c=z==1?1:2;if(s.sta<c)return toast('体力不足 ⚡');s.sta-=c;let arr=z==1?['leaf','flower','mush']:z==2?['crystal','dust']:['flower','honey','crystal'];let k=arr[Math.floor(Math.random()*arr.length)],q=2+Math.floor(Math.random()*4);s[k]+=q;s.quests.explore=Math.min(2,s.quests.explore+1);if(Math.random()<.25)s.gem+=3;toast(`探索完成：${k} ×${q} ✨`);save();render()}
+function attack(t){if(ehp<=0){ehp=240;energy=3;return toast('Boss 已重置')};let d=t==='normal'?22+s.gear.staff*2:t==='burst'?48+s.gear.staff*5:t==='doll'?34+Math.floor(s.aff/10)+s.gear.ring*4:8;if(t==='burst'){if(energy<2)return toast('能量不足');energy-=2}else if(t==='guard'){energy=Math.min(3,energy+1)}else energy=Math.min(3,energy+0.5);ehp=Math.max(0,ehp-d);let ph=ehp<=80?'狂暴晶核':ehp<=160?'紫晶共鸣':'晶化鳞甲';phase.textContent=ph;if(ehp===0){s.battles++;s.quests.battle=1;s.gold+=650;s.gem+=20;s.crystal+=8;blog.innerHTML='🏆 紫晶幼龙讨伐成功！ +650G +20💎<br>'+blog.innerHTML;toast('Boss 讨伐成功！ 🐉')}else{let hit=t==='guard'?3:10+(ehp<=80?8:ehp<=160?4:0);blog.innerHTML=`你造成 ${d} 伤害，Boss 反击 ${hit}。<br>`+blog.innerHTML}ehpTxt.textContent=ehp+' / 240';let ehpEl=document.getElementById('ehp');ehpEl.style.width=ehp/240*100+'%';enTxt.textContent=Math.floor(energy)+' / 3';en.style.width=energy/3*100+'%';save();render()}
 function gift(){if(s.honey<1)return toast('蜂蜜不足');s.honey--;s.aff=Math.min(100,s.aff+8);toast('夜铃好感度 +8 ❤️');save();render()}
 function pull(n){let cost=n*10;if(s.gem<cost)return toast('宝石不足');s.gem-=cost;let got=0;for(let i=0;i<n;i++){if(s.pity>=9||Math.random()<.16){got++;s.aff=Math.min(100,s.aff+4);s.pity=0}else s.pity++}glog.innerHTML=`✨ ${n} 抽完成：${got?'获得夜铃碎片 ×'+got:'获得普通人偶材料'}<br>`+glog.innerHTML;toast(got?'出现稀有结果！ ✨':'召唤完成');save();render()}
-function choice(x){if(x==1){s.aff=Math.min(100,s.aff+10);stitle.textContent='塔心回应';stext.textContent='夜铃伸出手。封印没有攻击她，反而像认出了某种熟悉的炼金术式。塔心第一次睁开了眼睛。';toast('信任路线 · 好感 +10')}else{s.gem+=12;stitle.textContent='第三重封印';stext.textContent='你解析出第三重符文：塔心并非魔物，而是一枚被人为制造的生命核心。';toast('调查路线 · +12💎')}s.story=4;save();render()}
+function choice(x){if(x==1){s.aff=Math.min(100,s.aff+10);stitle.textContent='塔心回应';stext.textContent='夜铃伸出手。封印没有攻击她，反而像认出了某种熟悉的炼金术式。塔心第一次睁开了眼睛。';toast('信任路线 · 好感 +10')}else{s.gem+=12;stitle.textContent='第三重封印';stext.textContent='你解析出第三重符文：塔心并非魔物，而是一枚被人为制造的生命核心。';toast('调查路线 · +12💎')}s.story=4;s.chapter=4;save();render()}
+function upgradeGear(k){const cost=k==='staff'?180:240;if(s.gold<cost)return toast('金币不足');s.gold-=cost;s.gear[k]++;toast((k==='staff'?'炼金杖':'契约石')+'强化至 Lv.'+s.gear[k]+' ⚔️');save();render()}
+function skill(k){if(k==='meteor'){if(energy<3)return toast('能量不足');energy-=3;let d=75+s.gear.staff*8;ehp=Math.max(0,ehp-d);blog.innerHTML=`☄️ 星陨炼成造成 ${d} 伤害！<br>`+blog.innerHTML;toast('星陨炼成！')}else{if(energy<1)return toast('能量不足');energy-=1;blog.innerHTML='🛡️ 紫晶屏障生效，本回合减伤。<br>'+blog.innerHTML;toast('紫晶屏障！')}ehpTxt.textContent=ehp+' / 240';document.getElementById('ehp').style.width=ehp/240*100+'%';enTxt.textContent=Math.floor(energy)+' / 3';en.style.width=energy/3*100+'%';if(ehp<=0){s.battles++;s.quests.battle=1;s.gold+=650;s.gem+=20;s.crystal+=8;toast('Boss 讨伐成功！ 🐉')}save();render()}
+function chapter4(){if(s.chapter<4)return toast('尚未解锁');s.chapter=5;s.story=5;stitle.textContent='第四章 · 塔心回响';stext.textContent='塔心终于回应。古老的炼金阵列重新点亮，夜铃发现自己的契约纹路与塔心完全一致。下一步，是进入塔心深处。';toast('第四章开启！ ✨');save();render()}
 function exportSave(){let txt=JSON.stringify(s);navigator.clipboard?.writeText(txt);toast('存档数据已复制 📋')}
-function resetSave(){if(confirm('确定删除 7.0 本地存档吗？')){localStorage.removeItem(K);location.reload()}}
+function resetSave(){if(confirm('确定删除 7.0 本地存档吗？')){localStorage.removeItem(K);localStorage.removeItem(OLD);location.reload()}}
 render();
 </script></body></html>
